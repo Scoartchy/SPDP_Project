@@ -1,0 +1,12 @@
+# Loading csv files
+file1 <- read.csv(file="1.csv", header=TRUE, sep=",")
+file2 <- read.csv(file="2.csv", header=TRUE, sep=",")
+file3 <- read.csv(file="3.csv", header=TRUE, sep=",")
+file4 <- read.csv(file="4.csv", header=TRUE, sep=",")
+file5 <- read.csv(file="5.csv", header=TRUE, sep=",")
+file6 <- read.csv(file="6.csv", header=TRUE, sep=",")
+file7 <- read.csv(file="7.csv", header=TRUE, sep=",")
+file8 <- read.csv(file="8.csv", header=TRUE, sep=",")
+file9 <- read.csv(file="9.csv", header=TRUE, sep=",")
+file10 <- read.csv(file="10.csv", header=TRUE, sep=",")
+file11 <- read.csv(file="11.csv", header=TRUE, sep=",")
