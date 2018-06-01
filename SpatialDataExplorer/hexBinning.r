@@ -80,5 +80,47 @@ ggplot() + geom_polygon(data = wmap, aes(x=long, y = lat, group = group)) +
   labs(fill="count") +
   coord_fixed(1.3)
 
-#### Looks a little messy doesn't it? Perhaps let's try a more robust analysis
+#### Looks a little messy doesn't it? Perhaps let's try a more robust analysis - by nations
+nationalities = data.frame(matrix(unlist(levels(filtered_logs$CLIWOC21.Nationality)),dimnames = list(c(), c("fac")), ncol = 1))
+nationalities$name = as.character(nationalities[,1])
+
+by(nationalities, 1:nrow(nationalities), function(row) {
+  nat_logs = filtered_logs[filtered_logs$CLIWOC21.Nationality == row$fac,]
+  longitude <- nat_logs$CLIWOC21.Lon3
+  latitude <- nat_logs$CLIWOC21.Lat3
+  
+  #using fmultivar for binning
+  hbin <- hexBinning(longitude, latitude)
+  wmap <- map_data('world')
+  ggplot() + geom_polygon(data = wmap, aes(x=long, y = lat, group = group)) + 
+    geom_hex(aes(hbin$x, hbin$y, fill=hbin$z), color="black", stat="identity", alpha=0.8) +
+    ggtitle("fMultivar binning with 30 bins") +
+    labs(fill="count") +
+    coord_fixed(1.3)
+  
+  #lets see with more bins
+  hbin <- hexBinning(longitude, latitude, bins=60)
+  ggplot() + geom_polygon(data = wmap, aes(x=long, y = lat, group = group)) + 
+    geom_hex(aes(hbin$x, hbin$y, fill=hbin$z), color="black", stat="identity", alpha=0.8) +
+    ggtitle("fMultivar binning with 60 bins") +
+    labs(fill="count") +
+    coord_fixed(1.3)
+  
+  #ggplot has its own binning too!
+  wmap <- map_data('world')
+  ggplot() + geom_polygon(data = wmap, aes(x=long, y = lat, group = group)) + 
+    geom_hex(aes(x = longitude, y = latitude), color="black", alpha=0.8) +
+    ggtitle("ggplot binning with 30 bins") +
+    labs(fill="count") +
+    coord_fixed(1.3)
+  
+  #and with more bins
+  wmap <- map_data('world')
+  ggplot() + geom_polygon(data = wmap, aes(x=long, y = lat, group = group)) + 
+    geom_hex(aes(x = longitude, y = latitude), color="black", alpha=0.8, bins=45) +
+    ggtitle("ggplot binning with 60 bins") +
+    labs(fill="count") +
+    coord_fixed(1.3)
+  
+})
 
