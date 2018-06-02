@@ -1,20 +1,23 @@
-longitude <- geodata$Geodata.DecLongitude
-latitude <- geodata$Geodata.DecLatitude
+longitude <- filtered_geodata$Geodata.DecLongitude
+latitude <- filtered_geodata$Geodata.DecLatitude
 
-pointPattern <- ppp(longitude, latitude, c(-180, 180), c(-90,90))
-summary(pointPattern)
+planarPointPattern <- ppp(longitude, latitude, c(-180, 180), c(-90,90))
+summary(planarPointPattern)
 
 # Plot of the point pattern
-plot(pointPattern)
+plot(planarPointPattern, main = "Wzorzec punktów", xlab = "Szerokość geograficzna", ylab = "Długość geograficzna")
 
 # Chart of the Ripley’s K-function:
-plot(Kest(pointPattern))
+plot(Kest(planarPointPattern), main = "Funkcja K")
 
 #Envelopes of K-function
-plot(envelope(pointPattern,Kest))
+plot(envelope(planarPointPattern,Kest))
 
 #Density of the pointPattern
-plot(density(pointPattern))
+dens <- density(planarPointPattern)
+plot(dens)
+persp(dens)
+contour(dens)
 
-Kest(pointPattern, r=NULL, breaks=NULL, correction=c("Ripley"), nlarge=NULL) 
+#Kest(planarPointPattern, r=NULL, breaks=NULL, correction=c("Ripley"), nlarge=NULL) 
 #"border", "isotropic", , "translate"
