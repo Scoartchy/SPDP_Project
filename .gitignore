@@ -1,6 +1,12 @@
 *.csv
 .Rproj.user
 .RData
+<<<<<<< HEAD
+*.Rhistory
+project.Rproj
+out
+=======
 .Rhistory
 project.Rproj
 out
+>>>>>>> 4d5ac29de77189dac4266382be08b0f3fca945ae
