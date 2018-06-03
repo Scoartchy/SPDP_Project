@@ -13,7 +13,16 @@ lonlat <- cbind(longitude, latitude)
 pts <- SpatialPoints(lonlat) 
 h <- 1 
 res <- kde.points(pts, h, n=100, lims=NULL)
-level.plot(res) 
+res <- as.data.frame(res)
+ggplot(mapping = aes(x=res$Var1, y=res$Var2)) + 
+  geom_tile(mapping = aes(fill = res$kde)) +
+  geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
+  xlim(-180, 180) +
+  ylim(-90, 90) +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  labs(fill = "level") +
+  coord_fixed(1.3)
+level.plot(res)
 
 #Perform KDE on log data for british ships with h = 1 n = 300
 nat_logs = filtered_logs[filtered_logs$CLIWOC21.Nationality == "British",]
@@ -23,7 +32,14 @@ lonlat <- cbind(longitude, latitude)
 pts <- SpatialPoints(lonlat) #Error in .local(obj, ...) : NA values in coordinates
 h <- 0.3 # scaled kernel should be adjusted
 res <- kde.points(pts, h, n=300, lims=NULL)
-level.plot(res)
+ggplot(mapping = aes(x=res$Var1, y=res$Var2)) + 
+  geom_tile(mapping = aes(fill = res$kde)) +
+  geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
+  xlim(-180, 180) +
+  ylim(-90, 90) +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  labs(fill = "level") +
+  coord_fixed(1.3)
 
 setwd(".")
 dir.create(file.path(getwd(), "out/kde"), recursive = TRUE)
