@@ -1,4 +1,5 @@
 setwd("/home/kacper/Uni/spdb/project")
+#setwd("C:/Users/Jakub/Documents/SPDP_Project")
 unzip("sources.zip")
 source_files = list.files(getwd() , pattern=".csv")
 sources <- lapply(source_files, function(x) {read.csv(x)})
