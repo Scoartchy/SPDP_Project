@@ -1,12 +1,16 @@
 # KDE
-install.packages("GISTools")
-install.packages("ggplot2")
-
 library(GISTools)
 library(sp)
 library(ggplot2)
 
-#Perform KDE on geodata with h = 1 and n = 200
+################################ Setup output directory
+
+setwd(".")
+dir.create(file.path(getwd(), "out/kde"), recursive = TRUE)
+
+#############################################################Using GISTools################################################################
+
+#Perform KDE on geodata with h = 1 and n = 100
 longitude <- filtered_geodata$Geodata.DecLongitude
 latitude <- filtered_geodata$Geodata.DecLatitude
 lonlat <- cbind(longitude, latitude)
@@ -14,17 +18,18 @@ pts <- SpatialPoints(lonlat)
 h <- 1 
 res <- kde.points(pts, h, n=100, lims=NULL)
 res <- as.data.frame(res)
-ggplot(mapping = aes(x=res$Var1, y=res$Var2)) + 
+plot <- ggplot(mapping = aes(x=res$Var1, y=res$Var2)) + 
   geom_tile(mapping = aes(fill = res$kde)) +
   geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   xlim(-180, 180) +
   ylim(-90, 90) +
-  scale_fill_gradient(low = "white", high = "steelblue") +
+  scale_fill_gradient(low = "white", high = "red") +
   labs(fill = "level", x="Longitude", y = "Lattitude") +
+  ggtitle("KDE for Geodata using GISTools") +
   coord_fixed(1.3)
-level.plot(res)
+ggsave(filename = paste("out/kde/ports_kde_1_100.png"), plot)
 
-#Perform KDE on log data for british ships with h = 1 n = 300
+#Perform KDE on log data for british ships with h = 0.3 n = 300
 nat_logs = filtered_logs[filtered_logs$CLIWOC21.Nationality == "British",]
 longitude <- nat_logs$CLIWOC21.Lon3
 latitude <- nat_logs$CLIWOC21.Lat3
@@ -33,7 +38,7 @@ pts <- SpatialPoints(lonlat) #Error in .local(obj, ...) : NA values in coordinat
 h <- 0.3 # scaled kernel should be adjusted
 res <- kde.points(pts, h, n=300, lims=NULL)
 res <- as.data.frame(res)
-ggplot(mapping = aes(x=res$Var1, y=res$Var2)) + 
+plot <- ggplot(mapping = aes(x=res$Var1, y=res$Var2)) + 
   geom_tile(mapping = aes(fill = res$kde)) +
   geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   xlim(-180, 180) +
@@ -41,10 +46,8 @@ ggplot(mapping = aes(x=res$Var1, y=res$Var2)) +
   scale_fill_gradient(low = "white", high = "steelblue") +
   labs(fill = "level", x="Longitude", y = "Lattitude") +
   coord_fixed(1.3)
-
-setwd(".")
-dir.create(file.path(getwd(), "out/kde"), recursive = TRUE)
-
+ggsave(filename = paste("out/kde/brits_kde_03_300.png"), plot)
+##################################################################Using ggplot2#################################################
 #But what if we used ggplot once again!
 #Prepare parameters
 nationalities = data.frame(matrix(unlist(
@@ -58,6 +61,8 @@ parameters=data.frame(matrix(unlist(parameters[order(parameters[,1]),]), ncol = 
 parameters$n_s=data.frame(matrix(unlist(rep(list(100, 300, 500), 8)), ncol=1, dimnames=list(c(), "n")))[,1]
 parameters[,1] = as.character(parameters[,1])
 colnames(parameters)[1] <- "name"
+
+
 by(parameters, 1:nrow(parameters), function(row) {
   nat_logs = filtered_logs[as.character(filtered_logs$CLIWOC21.Nationality) == row$name,]
   longitude <- nat_logs$CLIWOC21.Lon3
