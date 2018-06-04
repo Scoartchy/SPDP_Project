@@ -20,7 +20,7 @@ ggplot(mapping = aes(x=res$Var1, y=res$Var2)) +
   xlim(-180, 180) +
   ylim(-90, 90) +
   scale_fill_gradient(low = "white", high = "steelblue") +
-  labs(fill = "level") +
+  labs(fill = "level", x="Longitude", y = "Lattitude") +
   coord_fixed(1.3)
 level.plot(res)
 
@@ -32,13 +32,14 @@ lonlat <- cbind(longitude, latitude)
 pts <- SpatialPoints(lonlat) #Error in .local(obj, ...) : NA values in coordinates
 h <- 0.3 # scaled kernel should be adjusted
 res <- kde.points(pts, h, n=300, lims=NULL)
+res <- as.data.frame(res)
 ggplot(mapping = aes(x=res$Var1, y=res$Var2)) + 
   geom_tile(mapping = aes(fill = res$kde)) +
   geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   xlim(-180, 180) +
   ylim(-90, 90) +
   scale_fill_gradient(low = "white", high = "steelblue") +
-  labs(fill = "level") +
+  labs(fill = "level", x="Longitude", y = "Lattitude") +
   coord_fixed(1.3)
 
 setwd(".")

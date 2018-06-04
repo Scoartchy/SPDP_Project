@@ -3,7 +3,7 @@ library(spatstat)
 
 longitude <- geodata$Geodata.DecLongitude
 latitude <- geodata$Geodata.DecLatitude
-
+  
 pointPattern <- ppp(longitude, latitude, c(-180, 180), c(-90,90))
 summary(planarPointPattern)
 
@@ -13,7 +13,8 @@ plot(planarPointPattern, main = "Point pattern", xlab = "Longitude", ylab = "Lat
 # G-function (result and chart):
 resultG <- Gest(planarPointPattern)
 plot(resultG, main = "Funkcja L")
-
+  
+plot(Gest(pointPattern))
 plot(Gest(pointPattern), main = "Funkcja G")
 plot(Gest(pointPattern), cbind(rs, theo) ~ theo, main = "Funkcja G")
 plot(Gest(pointPattern), cbind(km, theo) ~ theo, main = "Funkcja G")

@@ -50,7 +50,7 @@ class(wind_logs)
 str(wind_logs)
 #2. Variogram
 winds.vgm <- variogram(list(wind_logs@data$CLIWOC21.WindForce), list(wind_logs@coords))
-winds.fit <- fit.variogram(winds.vgm, model=vgm(2, "Sph", 90, 2))
+winds.fit <- fit.variogram(winds.vgm, model=vgm(1.7, "Sph", 70, 1.5))
 plot(winds.vgm, winds.fit)
 #3. Prep
 library(gridExtra)

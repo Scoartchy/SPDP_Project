@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 # Funckja K
 library(spatstat)
 
+=======
+library("spatstat")
+>>>>>>> ba1d6d50820dd98b1e86220a61e352b6c67b18db
 longitude <- filtered_geodata$Geodata.DecLongitude
 latitude <- filtered_geodata$Geodata.DecLatitude
 
