@@ -8,6 +8,7 @@
 install.packages("GISTools")
 install.packages("fMultivar")
 install.packages("spatstat")
+install.packages("gstat")
 install.packages("kriging")
 install.packages("forecast")
 install.packages("McSpatial")

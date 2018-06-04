@@ -7,6 +7,7 @@ library(ggplot2)
 
 setwd(".")
 dir.create(file.path(getwd(), "out/kde"), recursive = TRUE)
+wmap <- map_data('world')
 
 #############################################################Using GISTools################################################################
 
@@ -43,7 +44,7 @@ plot <- ggplot(mapping = aes(x=res$Var1, y=res$Var2)) +
   geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   xlim(-180, 180) +
   ylim(-90, 90) +
-  scale_fill_gradient(low = "white", high = "steelblue") +
+  scale_fill_gradient(low = "white", high = "red") +
   labs(fill = "level", x="Longitude", y = "Lattitude") +
   coord_fixed(1.3)
 ggsave(filename = paste("out/kde/brits_kde_03_300.png"), plot)

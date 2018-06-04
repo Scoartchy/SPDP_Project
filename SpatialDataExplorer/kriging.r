@@ -1,5 +1,3 @@
-install.packages("gstat")
-
 library("gstat")
 library("sp")
 library(ggplot2)
@@ -9,6 +7,15 @@ suppressPackageStartupMessages({
   library(scales) # for "comma"
   library(magrittr)
 })
+library(gridExtra)
+
+################################ Setup output directory
+
+setwd(".")
+dir.create(file.path(getwd(), "out/krige"), recursive = TRUE)
+wmap <- map_data('world')
+
+############################################ On to the good stuff
 
 ##########Let's try to krieg 
 ####First let's clean the data
@@ -34,12 +41,13 @@ wind_logs = wind_logs[wind_logs$CLIWOC21.Lon3 > -75 & wind_logs$CLIWOC21.Lon3 < 
 #We are left with 36.6k records out of original 247.4k, so only 1 in 8. Could do with some heuristics here to show a little bit more. 
 #Still this is decent enough. Let's see it on the graph.
 
-ggplot() +
+plot <- ggplot() +
   geom_point(aes(x = wind_logs$CLIWOC21.Lon3, y = wind_logs$CLIWOC21.Lat3, color = wind_logs$CLIWOC21.WindForce), alpha=0.75) +
   ggtitle("Wind force in beaufort") + 
   labs(x = "longitude", y = "latitude", color = "Wind Force[Beaufort]") +
   coord_equal() + 
   theme_bw()
+ggsave(filename = paste("out/krige/winds.png"))
 
 #Nice!
 #So let's get down to business (to defeat the huns)
@@ -53,7 +61,6 @@ winds.vgm <- variogram(list(wind_logs@data$CLIWOC21.WindForce), list(wind_logs@c
 winds.fit <- fit.variogram(winds.vgm, model=vgm(1.7, "Sph", 70, 1.5))
 plot(winds.vgm, winds.fit)
 #3. Prep
-library(gridExtra)
 plot1 <- wind_logs %>% as.data.frame %>%
   ggplot(aes(CLIWOC21.Lon3, CLIWOC21.Lat3)) + geom_point(size=0) + coord_equal() + 
   ggtitle("Points with measurements")
@@ -67,10 +74,11 @@ grid.arrange(plot1, plot2, ncol = 2)
 #4. KRIGE!
 coordinates(winds_grid) <- ~ x1 + x2 # step 3 above
 winds.kriged <- krige(wind_logs@data$CLIWOC21.WindForce ~ 1, wind_logs, winds_grid, model=winds.fit, nmax=10, nmin=1)
-winds.kriged %>% as.data.frame %>%
+plot <- winds.kriged %>% as.data.frame %>%
   ggplot(aes(x=x1, y=x2)) + 
   geom_tile(aes(fill=var1.pred)) + 
   coord_equal() +
   scale_fill_gradient(low = "yellow", high="red") +
   scale_x_continuous(labels=comma) + scale_y_continuous(labels=comma) +
   theme_bw()
+ggsave(filename = paste("out/krige/winds_kriged.png"))
