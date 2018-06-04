@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 # Funckja K
 library(spatstat)
 
+=======
+library("spatstat")
+>>>>>>> ba1d6d50820dd98b1e86220a61e352b6c67b18db
 longitude <- filtered_geodata$Geodata.DecLongitude
 latitude <- filtered_geodata$Geodata.DecLatitude
 
@@ -19,6 +23,8 @@ plot(Kest(planarPointPattern, correction = "isotropicr"), main = "Funkcja K (z z
 plot(Kest(planarPointPattern, correction = "Ripley"), main = "Funkcja K (z zastosowanie korekcji Ripleya)")
 plot(Kest(planarPointPattern, correction = "translate"), main = "Funkcja K (z zastosowaniem korekcji translacyjnej")
 plot(Kest(planarPointPattern, correction = "all"), main = "Funkcja K (z zastosowaniem wszystkich korekcji")
+
+correction=c("border", "isotropic", "Ripley", "translate"),
 
 #Envelopes of K-function
 plot(envelope(planarPointPattern, Kest))
