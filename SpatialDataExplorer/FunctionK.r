@@ -1,3 +1,4 @@
+library("spatstat")
 longitude <- filtered_geodata$Geodata.DecLongitude
 latitude <- filtered_geodata$Geodata.DecLatitude
 
