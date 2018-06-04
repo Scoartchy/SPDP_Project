@@ -1,16 +1,20 @@
 #hexBinning
-install.packages("fMultivar")
 library(ggplot2)
 library(fMultivar)
-longitude <- geodata$Geodata.DecLongitude
-latitude <- geodata$Geodata.DecLatitude
+
+################################ Setup output directory
+
+setwd(".")
+dir.create(file.path(getwd(), "out/hexbin"), recursive = TRUE)
 
 ################################ For geodata ie ports ####################################################
 
+longitude <- geodata$Geodata.DecLongitude
+latitude <- geodata$Geodata.DecLatitude
 #using fmultivar for binning
 hbin <- hexBinning(longitude, latitude)
 wmap <- map_data('world')
-ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
+plot <- ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   geom_hex(
     aes(hbin$x, hbin$y, fill = hbin$z),
     color = "black",
@@ -20,10 +24,11 @@ ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   ggtitle("fMultivar binning with 30 bins") +
   labs(fill = "count") +
   coord_fixed(1.3)
+ggsave(filename = paste("out/hexbin/ports_fMultivar_30.png"), plot)
 
-#lets see with more bins
+######lets see with more bins
 hbin <- hexBinning(longitude, latitude, bins = 60)
-ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
+plot <- ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   geom_hex(
     aes(hbin$x, hbin$y, fill = hbin$z),
     color = "black",
@@ -33,20 +38,23 @@ ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   ggtitle("fMultivar binning with 60 bins") +
   labs(fill = "count") +
   coord_fixed(1.3)
+ggsave(filename = paste("out/hexbin/ports_fMultivar_60.png"), plot)
 
-#ggplot has its own binning too!
+##########################################3ggplot has its own binning too!
 wmap <- map_data('world')
-ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
+plot <- ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   geom_hex(aes(x = longitude, y = latitude),
            color = "black",
            alpha = 0.8) +
   ggtitle("ggplot binning with 30 bins") +
   labs(fill = "count") +
   coord_fixed(1.3)
+ggsave(filename = paste("out/hexbin/ports_ggplot_30.png"), plot)
 
-#and with more bins
+
+########and with more bins
 wmap <- map_data('world')
-ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
+plot <- ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   geom_hex(
     aes(x = longitude, y = latitude),
     color = "black",
@@ -56,12 +64,11 @@ ggplot() + geom_polygon(data = wmap, aes(x = long, y = lat, group = group)) +
   ggtitle("ggplot binning with 60 bins") +
   labs(fill = "count") +
   coord_fixed(1.3)
+ggsave(filename = paste("out/hexbin/ports_ggplot_60.png"), plot)
 
 ############################################## For ships ########################################################
 
 #################For all
-setwd(".")
-dir.create(file.path(getwd(), "out/hexbin"), recursive = TRUE)
 
 longitude <- filtered_logs$CLIWOC21.Lon3
 latitude <- filtered_logs$CLIWOC21.Lat3
