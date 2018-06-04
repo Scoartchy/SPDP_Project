@@ -1,10 +1,10 @@
-<<<<<<< HEAD
 # Funckja K
+library(ggplot2)
 library(spatstat)
 
-=======
-library("spatstat")
->>>>>>> ba1d6d50820dd98b1e86220a61e352b6c67b18db
+setwd(".")
+dir.create(file.path(getwd(), "out/functionK"), recursive = TRUE)
+
 longitude <- filtered_geodata$Geodata.DecLongitude
 latitude <- filtered_geodata$Geodata.DecLatitude
 
@@ -16,18 +16,34 @@ plot(planarPointPattern, main = "Point pattern", xlab = "Longitude", ylab = "Lat
 
 # Ripley's K-function (result and chart):
 resultK <- Kest(planarPointPattern)
-plot(resultK, main = "Funkcja K")
+png("out/functionK/functionK.png")
+plot <- plot(resultK, main = "Funkcja K")
+dev.off()
 
-plot(Kest(planarPointPattern, correction = "border"), main = "Funkcja K (z zastosowaniem korekcji granicznej")
-plot(Kest(planarPointPattern, correction = "isotropicr"), main = "Funkcja K (z zastosowaniem korekcji isotropowej")
-plot(Kest(planarPointPattern, correction = "Ripley"), main = "Funkcja K (z zastosowanie korekcji Ripleya)")
-plot(Kest(planarPointPattern, correction = "translate"), main = "Funkcja K (z zastosowaniem korekcji translacyjnej")
-plot(Kest(planarPointPattern, correction = "all"), main = "Funkcja K (z zastosowaniem wszystkich korekcji")
+png("out/functionK/functionK_border.png")
+plot <- plot(Kest(planarPointPattern, correction = "border"), main = "Funkcja K (z zastosowaniem korekcji granicznej)")
+dev.off()
 
-correction=c("border", "isotropic", "Ripley", "translate"),
+png("out/functionK/functionK_isotropic.png")
+plot <- plot(Kest(planarPointPattern, correction = "isotropic"), main = "Funkcja K (z zastosowaniem korekcji izotropowej)")
+dev.off()
+
+png("out/functionK/functionK_Ripley.png")
+plot <- plot(Kest(planarPointPattern, correction = "Ripley"), main = "Funkcja K (z zastosowanie korekcji Ripleya)")
+dev.off()
+
+png("out/functionK/functionK_translate.png")
+plot <- plot(Kest(planarPointPattern, correction = "translate"), main = "Funkcja K (z zastosowaniem korekcji translacyjnej)")
+dev.off()
+
+png("out/functionK/functionK_all.png")
+plot <- plot(Kest(planarPointPattern, correction = "all"), main = "Funkcja K (z zastosowaniem wszystkich korekcji)")
+dev.off()
 
 #Envelopes of K-function
-plot(envelope(planarPointPattern, Kest))
+png("out/functionK/envelopeOfFunctionK.png")
+plot <- plot(envelope(planarPointPattern, Kest))
+dev.off()
 
 
 
