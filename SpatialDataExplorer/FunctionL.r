@@ -2,8 +2,8 @@
 library(ggplot2)
 library(spatstat)
 
-#setwd(".")
-#dir.create(file.path(getwd(), "out/functionL"), recursive = TRUE)
+setwd(".")
+dir.create(file.path(getwd(), "out/functionL"), recursive = TRUE)
 
 longitude <- filtered_geodata$Geodata.DecLongitude
 latitude <- filtered_geodata$Geodata.DecLatitude
@@ -11,21 +11,37 @@ latitude <- filtered_geodata$Geodata.DecLatitude
 planarPointPattern <- ppp(longitude, latitude, c(-180, 180), c(-90,90))
 summary(planarPointPattern)
 
-result <- Lest(pointPattern)
-plot(Lest(pointPattern))
+result<- Lest(pointPattern)
 
-# Plot of the point pattern
-png("out/functionL/point_pattern.png") 
-plot(planarPointPattern, main = "Point pattern", xlab = "Longitude", ylab = "Latitude")
-dev.off()
+plot <- ggplot(data=result, aes(x=r, y=theo, group=1)) +
+  geom_line() +
+  ylab("L(r) (theo)") +
+  ggtitle("L function (theo)") 
+ggsave(filename = paste("out/functionL/functionL_theo.png"), plot)
 
-# L-function (result and chart):
-resultL <- Lest(planarPointPattern)
-png("out/functionL/functionL.png") 
-plot(resultL, main = "Funkcja L")
-dev.off()
+plot <- ggplot(data=result, aes(x=r, y=border, group=1)) +
+  geom_line() +
+  ylab("L(r) (border)") +
+  ggtitle("L function (border)") 
+ggsave(filename = paste("out/functionL/functionL_border.png"), plot)
 
-#Envelopes of L-function
-png("out/functionL/envelopesOfFunctionL.png") 
-plot(envelope(planarPointPattern, Lest))
-dev.off()
+plot <- ggplot(data=result, aes(x=r, y=trans, group=1)) +
+  geom_line()  +
+  ylab("L(r) (trans)") +
+  ggtitle("L function (trans)") 
+ggsave(filename = paste("out/functionL/functionL_trans.png"), plot)
+
+plot <- ggplot(data=result, aes(x=r, y=iso, group=1)) +
+  geom_line() +
+  ylab("L(r) (iso)") +
+  ggtitle("L function (iso)") 
+ggsave(filename = paste("out/functionL/functionL_iso.png"), plot)
+
+plot <- ggplot(data=result, aes(x=r, y=theo)) +
+  geom_line(aes(y=theo, colour = "theo"), group = 1) +
+  geom_line(aes(y=border, colour = "border"), group = 2) +
+  geom_line(aes(y=trans, colour = "trans"), group = 3) +
+  geom_line(aes(y=iso, colour = "iso"), group = 4) +
+  ylab("L(r)") +
+  ggtitle("L function") 
+ggsave(filename = paste("out/functionL/functionL.png"), plot)
