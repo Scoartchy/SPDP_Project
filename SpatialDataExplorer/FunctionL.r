@@ -45,3 +45,22 @@ plot <- ggplot(data=result, aes(x=r, y=theo)) +
   ylab("L(r)") +
   ggtitle("L function") 
 ggsave(filename = paste("out/functionL/functionL.png"), plot)
+
+#plot(result)
+#plot(result, . -r ~ r)
+
+resultR <- result
+resultR$theo <- resultR$theo - resultR$r
+resultR$border <- resultR$border - resultR$r
+resultR$trans <- resultR$trans - resultR$r
+resultR$iso <- resultR$iso - resultR$r
+plot(resultR)
+
+plot <- ggplot(data=resultR, aes(x=r, y=theo)) +
+  geom_line(aes(y=theo, colour = "theo"), group = 1) +
+  geom_line(aes(y=border, colour = "border"), group = 2) +
+  geom_line(aes(y=trans, colour = "trans"), group = 3) +
+  geom_line(aes(y=iso, colour = "iso"), group = 4) +
+  ylab("L(r)-r") +
+  ggtitle("L function (L(theo = 0)") 
+ggsave(filename = paste("out/functionL/functionL_theo0.png"), plot)

@@ -8,6 +8,9 @@ dir.create(file.path(getwd(), "out/functionK"), recursive = TRUE)
 longitude <- filtered_geodata$Geodata.DecLongitude
 latitude <- filtered_geodata$Geodata.DecLatitude
 
+#longitude <- filtered_logs$CLIWOC21.Lon3
+#latitude <- filtered_logs$CLIWOC21.Lat3
+
 planarPointPattern <- ppp(longitude, latitude, c(-180, 180), c(-90,90))
 summary(planarPointPattern)
 
@@ -43,5 +46,7 @@ plot <- ggplot(data=result, aes(x=r, y=theo)) +
   geom_line(aes(y=trans, colour = "trans"), group = 3) +
   geom_line(aes(y=iso, colour = "iso"), group = 4) +
   ylab("K(r)") +
+  #xlim(0, 100) +
+  #ylim(0, 20000) +
   ggtitle("K function") 
 ggsave(filename = paste("out/functionK/functionK.png"), plot)
