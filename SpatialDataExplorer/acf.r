@@ -35,3 +35,8 @@ ncf.cor <- correlog(x.coord, y.coord, z.value,
 
 library(pgirmess)
 pgi.cor <- correlog(coords=xy, z=z.value, method="Moran", nbclass=21)
+
+
+dutch_logs = filtered_logs[as.character(filtered_logs$CLIWOC21.Nationality) == "Dutch"]
+american_logs = filtered_logs[as.character(filtered_logs$CLIWOC21.Nationality) == "American"]
+
