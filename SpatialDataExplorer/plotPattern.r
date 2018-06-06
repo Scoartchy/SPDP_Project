@@ -16,7 +16,7 @@ plot(planarPointPattern, "Wzorzec punktów dla portów")
 plot <- ggplot(data=planarPointPattern, aes(x, y)) +
   geom_point() +
   ggtitle("Point pattern for ports") 
-ggsave(filename = paste("out/plotPattern/point_pattern_ports.png"), plot)
+ggsave(filename = paste("out/pointPatterns/point_pattern_ports.png"), plot)
 
 
 longitude <- filtered_logs$CLIWOC21.Lon3
@@ -30,4 +30,4 @@ plot(planarPointPattern, "Wzorzec punktów dla miejsc odwiedzonych w trakcie podr
 plot <- ggplot(data=planarPointPattern, aes(x=x, y=y, group=1)) +
   geom_point() +
   ggtitle("Point pattern for travel points") 
-ggsave(filename = paste("out/plotPattern/point_pattern_voyage.png"), plot)
+ggsave(filename = paste("out/pointPatterns/point_pattern_voyage.png"), plot)
